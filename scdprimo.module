@@ -1,0 +1,80 @@
+<?php
+
+function scdprimo_help($path, $arg) {
+  switch ($path) {
+    case "admin/help#scdprimo":
+      return '<p>' . t("Help text") . '</p>';
+      break;
+  }
+} 
+
+function scdprimo_menu() {
+
+  $items[] = array(
+    'path' => 'primo-global',
+    'title' => 'Rechercher',
+    'page callback' => 'scdprimo_global',
+    'access callback' => TRUE,
+  );
+
+  $items[] = array(
+    'path' => 'primo-martinique',
+    'title' => 'Rechercher',
+    'page callback' => 'scdprimo_martinique',
+    'access callback' => TRUE,
+  );
+
+  $items[] = array(
+    'path' => 'primo-guadeloupe',
+    'title' => 'Rechercher',
+    'page callback' => 'scdprimo_guadeloupe',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+function scdprimo_global() {
+  return drupal_get_form('scdprimo_global_form');
+}
+
+function scdprimo_global_form($form_state) {
+
+  $form['#method'] = 'get';
+  $form['#action'] = 'http://chipri03bleu.hosted.exlibrisgroup.com:1701/primo_library/libweb/action/search.do';
+
+  $form['vl(freeText0)'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#required' => TRUE,
+    '#description' => t('Scope = blended & facettes par type de doc : facet_rtype = articles ou facet_rtype = books'),
+  );
+
+  $form['fn']       = array('#type' => 'hidden', '#value' => 'search'      );
+  $form['mode']     = array('#type' => 'hidden', '#value' => 'Basic'       );
+  $form['tab']      = array('#type' => 'hidden', '#value' => 'default_tab' );
+  $form['indx']     = array('#type' => 'hidden', '#value' => '1',          );
+  $form['dum']      = array('#type' => 'hidden', '#value' => 'true',       );
+  $form['str']      = array('#type' => 'hidden', '#value' => 'rank',       );
+  $form['vid']      = array('#type' => 'hidden', '#value' => 'UAG',        );
+  $form['scp.scps'] = array('#type' => 'hidden', '#value' => 'scope:(uag_horizon)' );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+
+  return $form;
+}
+
+function scdprimo_global_form_submit($form, &$form_state) {
+    drupal_set_message(t('The form has been submitted.'));
+}
+
+function scdprimo_martinique() {
+}
+
+function scdprimo_guadeloupe() {
+}
+
+?>

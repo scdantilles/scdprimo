@@ -1,0 +1,4 @@
+name = SCD Primo
+description = "Primo integration for the SCD"
+package = SCD
+core = 7.x
