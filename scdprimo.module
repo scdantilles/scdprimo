@@ -40,24 +40,16 @@ function scdprimo_global() {
 
 function scdprimo_global_form($form_state) {
 
-  $form['#method'] = 'get';
-  $form['#action'] = 'http://chipri03bleu.hosted.exlibrisgroup.com:1701/primo_library/libweb/action/search.do';
-
-  $form['vl(freeText0)'] = array(
+  $form['query'] = array(
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#required' => TRUE,
-    '#description' => t('Scope = blended & facettes par type de doc : facet_rtype = articles ou facet_rtype = books'),
   );
 
-  $form['fn']       = array('#type' => 'hidden', '#value' => 'search'      );
-  $form['mode']     = array('#type' => 'hidden', '#value' => 'Basic'       );
-  $form['tab']      = array('#type' => 'hidden', '#value' => 'default_tab' );
-  $form['indx']     = array('#type' => 'hidden', '#value' => '1',          );
-  $form['dum']      = array('#type' => 'hidden', '#value' => 'true',       );
-  $form['str']      = array('#type' => 'hidden', '#value' => 'rank',       );
-  $form['vid']      = array('#type' => 'hidden', '#value' => 'UAG',        );
-  $form['scp.scps'] = array('#type' => 'hidden', '#value' => 'scope:(uag_horizon)' );
+  $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',        );
+  $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',        );
+  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON' );
+  $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab' );
 
   $form['submit'] = array(
     '#type' => 'submit',
@@ -68,7 +60,13 @@ function scdprimo_global_form($form_state) {
 }
 
 function scdprimo_global_form_submit($form, &$form_state) {
-    drupal_set_message(t('The form has been submitted.'));
+  $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
+  $url = 'http://chipri03bleu.hosted.exlibrisgroup.com:1701/primo_library/libweb/action/dlSearch.do' .
+    url(NULL, array(
+      'query' => $form_state['values'],
+      'external' => TRUE,
+    ));
+  drupal_goto($url); 
 }
 
 function scdprimo_martinique() {
