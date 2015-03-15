@@ -51,6 +51,18 @@ function scdprimo_global_form($form_state) {
   $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON' );
   $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab' );
 
+  $form['types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Filtrer par type'),
+    '#options' => drupal_map_assoc(array(
+      t('books'),
+      t('articles'),
+      t('reviews'),
+      t('media'),
+      t('other'),
+    )),
+  );
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Submit',
@@ -66,6 +78,12 @@ function scdprimo_global_form_submit($form, &$form_state) {
       'query' => $form_state['values'],
       'external' => TRUE,
     ));
+
+  foreach($form_state['values']['types'] as $k => $v) {
+    if ($v)
+	$url .= "&query=facet_rtype,exact," . $k;
+  }
+
   drupal_goto($url); 
 }
 
