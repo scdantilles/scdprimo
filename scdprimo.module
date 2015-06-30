@@ -37,6 +37,10 @@ function scdprimo_global() {
   return drupal_get_form('scdprimo_global_form');
 }
 
+function scdprimo_martinique() {
+  return drupal_get_form('scdprimo_martinique_form');
+}
+
 function scdprimo_global_form($form_state) {
   $form['query'] = array(
     '#type' => 'textfield',
@@ -85,7 +89,7 @@ function scdprimo_global_form_submit($form, &$form_state) {
   drupal_goto($url); 
 }
 
-function scdprimo_martinique() {
+function scdprimo_martinique_form() {
   $form['query'] = array(
     '#type' => 'textfield',
     '#title' => t('Search'),
