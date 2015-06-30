@@ -9,7 +9,6 @@ function scdprimo_help($path, $arg) {
 } 
 
 function scdprimo_menu() {
-
   $items[] = array(
     'path' => 'primo-global',
     'title' => 'Rechercher',
@@ -39,17 +38,16 @@ function scdprimo_global() {
 }
 
 function scdprimo_global_form($form_state) {
-
   $form['query'] = array(
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#required' => TRUE,
   );
 
-  $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',        );
-  $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',        );
-  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON' );
-  $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab' );
+  $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
+  $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',       );
+  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'Blended'    );
+  $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
 
   $form['types'] = array(
     '#type' => 'checkboxes',
@@ -81,13 +79,43 @@ function scdprimo_global_form_submit($form, &$form_state) {
 
   foreach($form_state['values']['types'] as $k => $v) {
     if ($v)
-	$url .= "&query=facet_rtype,exact," . $k;
+      $url .= "&query=facet_rtype,exact," . $k;
   }
 
   drupal_goto($url); 
 }
 
 function scdprimo_martinique() {
+  $form['query'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#required' => TRUE,
+  );
+
+  $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
+  $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',       );
+  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON');
+  $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+
+  return $form;
+}
+
+function scdprimo_martinique_form_submit($form, &$form_state) {
+  $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
+  $url = 'http://chipri03bleu.hosted.exlibrisgroup.com:1701/primo_library/libweb/action/dlSearch.do' .
+    url(NULL, array(
+      'query' => $form_state['values'],
+      'external' => TRUE,
+    ));
+
+  $url .= "query=facet_library,exact,BUMA";
+
+  drupal_goto($url);
 }
 
 function scdprimo_guadeloupe() {
