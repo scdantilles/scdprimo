@@ -41,6 +41,25 @@ function scdprimo_martinique() {
   return drupal_get_form('scdprimo_martinique_form');
 }
 
+function scdprimo_block_info() {
+  $blocks['primo_martinique'] = array(
+    'info' => t('Recherche Primo pour la Martinique'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+function scdprimo_block_view($delta = '') {
+  switch($delta) {
+    case 'primo_martinique':
+      $block['content'] = drupal_get_form('scdprimo_martinique_form');
+      break;
+  }
+
+  return $block;
+}
+
 function scdprimo_global_form($form_state) {
   $form['query'] = array(
     '#type' => 'textfield',
@@ -90,20 +109,27 @@ function scdprimo_global_form_submit($form, &$form_state) {
 }
 
 function scdprimo_martinique_form() {
-  $form['query'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Search'),
-    '#required' => TRUE,
-  );
-
   $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
   $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',       );
   $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON');
   $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
 
+  $form['query'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#attributes' => array(
+      'placeholder' => t('Trouvez des livres, revues, DVD, etc...'),
+    ),
+    '#theme_wrappers' => array(),
+    '#prefix' => '<div class="input-group input-group-lg">',
+    '#required' => TRUE,
+  );
+
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => 'Submit',
+    '#value' => 'Chercher',
+    '#prefix' => '<span class="input-group-btn">',
+    '#suffix' => '</span></div>',
   );
 
   return $form;
