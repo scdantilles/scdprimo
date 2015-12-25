@@ -127,7 +127,7 @@ function scdprimo_martinique_form() {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => 'Chercher',
+    '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
     '#prefix' => '<span class="input-group-btn">',
     '#suffix' => '</span></div>',
   );
