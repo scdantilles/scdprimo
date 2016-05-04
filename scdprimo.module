@@ -47,6 +47,11 @@ function scdprimo_block_info() {
     'cache' => DRUPAL_NO_CACHE,
   );
 
+  $blocks['primo_guadeloupe'] = array(
+    'info' => t('Recherche Primo pour la Guadeloupe'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
   return $blocks;
 }
 
@@ -54,6 +59,9 @@ function scdprimo_block_view($delta = '') {
   switch($delta) {
     case 'primo_martinique':
       $block['content'] = drupal_get_form('scdprimo_martinique_form');
+      break;
+    case 'primo_guadeloupe':
+      $block['content'] = drupal_get_form('scdprimo_guadeloupe_form');
       break;
   }
 
@@ -108,7 +116,7 @@ function scdprimo_global_form_submit($form, &$form_state) {
   drupal_goto($url); 
 }
 
-function scdprimo_martinique_form() {
+function scdprimo_library_form() {
   $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
   $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',       );
   $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON');
@@ -135,6 +143,14 @@ function scdprimo_martinique_form() {
   return $form;
 }
 
+function scdprimo_martinique_form() {
+  return scdprimo_library_form();
+}
+
+function scdprimo_guadeloupe_form() {
+  return scdprimo_library_form();
+}
+
 function scdprimo_martinique_form_submit($form, &$form_state) {
   $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
   $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
@@ -148,7 +164,17 @@ function scdprimo_martinique_form_submit($form, &$form_state) {
   drupal_goto($url);
 }
 
-function scdprimo_guadeloupe() {
+function scdprimo_guadeloupe_form_submit($form, &$form_state) {
+  $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
+  $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
+    url(NULL, array(
+      'query' => $form_state['values'],
+      'external' => TRUE,
+    ));
+
+  $url .= "query=facet_library,exact,BUGA";
+
+  drupal_goto($url);
 }
 
 ?>
