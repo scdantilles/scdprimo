@@ -84,6 +84,11 @@ function scdprimo_global_form($form_state) {
   $form['query'] = array(
     '#type' => 'textfield',
     '#title' => t('Search'),
+    '#attributes' => array(
+      'placeholder' => t('Trouvez des livres, revues, DVD, etc...'),
+    ),
+    '#theme_wrappers' => array(),
+    '#prefix' => '<div class="input-group input-group-lg">',
     '#required' => TRUE,
   );
 
@@ -92,7 +97,7 @@ function scdprimo_global_form($form_state) {
   $form['search_scope'] = array('#type' => 'hidden', '#value' => 'Blended'    );
   $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
 
-  $form['types'] = array(
+  /*$form['types'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Filtrer par type'),
     '#options' => drupal_map_assoc(array(
@@ -102,11 +107,13 @@ function scdprimo_global_form($form_state) {
       t('media'),
       t('other'),
     )),
-  );
+  );*/
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => 'Submit',
+    '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
+    '#prefix' => '<span class="input-group-btn">',
+    '#suffix' => '</span></div>',
   );
 
   return $form;
@@ -120,10 +127,10 @@ function scdprimo_global_form_submit($form, &$form_state) {
       'external' => TRUE,
     ));
 
-  foreach($form_state['values']['types'] as $k => $v) {
+  /*foreach($form_state['values']['types'] as $k => $v) {
     if ($v)
       $url .= "&query=facet_rtype,exact," . $k;
-  }
+  }*/
 
   drupal_goto($url); 
 }
