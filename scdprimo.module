@@ -41,7 +41,16 @@ function scdprimo_martinique() {
   return drupal_get_form('scdprimo_martinique_form');
 }
 
+function scdprimo_guadeloupe() {
+  return drupal_get_form('scdprimo_guadeloupe_form');
+}
+
 function scdprimo_block_info() {
+  $blocks['primo_global'] = array(
+    'info' => t('Recherche Primo globale'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
   $blocks['primo_martinique'] = array(
     'info' => t('Recherche Primo pour la Martinique'), 
     'cache' => DRUPAL_NO_CACHE,
@@ -57,6 +66,9 @@ function scdprimo_block_info() {
 
 function scdprimo_block_view($delta = '') {
   switch($delta) {
+    case 'primo_global':
+      $block['content'] = drupal_get_form('scdprimo_global_form');
+      break;
     case 'primo_martinique':
       $block['content'] = drupal_get_form('scdprimo_martinique_form');
       break;
