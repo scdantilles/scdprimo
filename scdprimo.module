@@ -30,6 +30,13 @@ function scdprimo_menu() {
     'access callback' => TRUE,
   );
 
+  $items[] = array(
+    'path' => 'primo-recherche',
+    'title' => 'Rechercher',
+    'page callback' => 'scdprimo_recherche',
+    'access callback' => TRUE,
+  );
+
   return $items;
 }
 
@@ -43,6 +50,10 @@ function scdprimo_martinique() {
 
 function scdprimo_guadeloupe() {
   return drupal_get_form('scdprimo_guadeloupe_form');
+}
+
+function scdprimo_recherche() {
+  return drupal_get_form('scdprimo_recherche_form');
 }
 
 function scdprimo_block_info() {
@@ -61,7 +72,39 @@ function scdprimo_block_info() {
     'cache' => DRUPAL_NO_CACHE,
   );
 
+  $blocks['primo_recherche'] = array(
+    'info' => t('Recherche Primo pour la Recherche'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
   return $blocks;
+}
+
+function scdprimo_recherche_tabs() {
+  $out = "";
+  $out .= '<div id="recherchetabs" class="visible-xs">';
+  $out .= '<ul class="nav nav-tabs" role="tablist">';
+  $out .= '<li role="presentation" class="active"><a href="#lib1" aria-controls="lib1" role="tab" data-toggle="tab">UADoc</a></li>';
+  $out .= '<li role="presentation"               ><a href="#lib2" aria-controls="lib2" role="tab" data-toggle="tab">Scopus</a></li>';
+  $out .= '<li role="presentation"               ><a href="#lib3" aria-controls="lib3" role="tab" data-toggle="tab">PubMed</a></li>';
+  $out .= "</ul>";
+  $out .= '<div class="tab-content">';
+
+    $out .= '<div role="tabpanel" class="tab-pane active" id="lib1">';
+    $out .= '<table class="table table-bordered">';
+    $out .= '<tr>';
+    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_recherche_form')) . '</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
+    $out .= '<td class="col-xs-6"><a href="#">Ttes ressources</a></td>';
+    $out .= "</tr>";
+    $out .= "</table>";
+    $out .= "</div>";
+
+  $out .= '</div>';
+  $out .= '</div>';
+  return $out;
 }
 
 function scdprimo_block_view($delta = '') {
@@ -74,6 +117,9 @@ function scdprimo_block_view($delta = '') {
       break;
     case 'primo_guadeloupe':
       $block['content'] = drupal_get_form('scdprimo_guadeloupe_form');
+      break;
+    case 'primo_recherche':
+      $block['content'] = scdprimo_recherche_tabs(); 
       break;
   }
 
@@ -170,6 +216,10 @@ function scdprimo_guadeloupe_form() {
   return scdprimo_library_form();
 }
 
+function scdprimo_recherche_form() {
+  return scdprimo_library_form();
+}
+
 function scdprimo_martinique_form_submit($form, &$form_state) {
   $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
   $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
@@ -194,6 +244,17 @@ function scdprimo_guadeloupe_form_submit($form, &$form_state) {
   $url .= "query=facet_library,exact,BUGA";
 
   drupal_goto($url);
+}
+
+function scdprimo_recherche_form_submit($form, &$form_state) {
+  $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
+  $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
+    url(NULL, array(
+      'query' => $form_state['values'],
+      'external' => TRUE,
+    ));
+
+  drupal_goto($url); 
 }
 
 ?>
