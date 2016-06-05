@@ -82,7 +82,10 @@ function scdprimo_block_info() {
 
 function scdprimo_recherche_tabs() {
   $out = "";
-  $out .= '<div id="recherchetabs" class="visible-xs">';
+
+  $out .= '<div class="row">';
+
+  $out .= '<div id="recherchetabs" class="col-xs-12 col-sm-9">';
   $out .= '<ul class="nav nav-tabs" role="tablist">';
   $out .= '<li role="presentation" class="active"><a href="#lib1" aria-controls="lib1" role="tab" data-toggle="tab">UADoc</a></li>';
   $out .= '<li role="presentation"               ><a href="#lib2" aria-controls="lib2" role="tab" data-toggle="tab">Scopus</a></li>';
@@ -95,7 +98,7 @@ function scdprimo_recherche_tabs() {
     $out .= '<tr>';
     $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_recherche_form')) . '</td>';
     $out .= '</tr>';
-    $out .= '<tr>';
+    $out .= '<tr class="visible-xs">';
     $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
     $out .= '<td class="col-xs-6"><a href="#">Ttes ressources</a></td>';
     $out .= "</tr>";
@@ -104,6 +107,14 @@ function scdprimo_recherche_tabs() {
 
   $out .= '</div>';
   $out .= '</div>';
+
+  $out .= '<div class="col-sm-3 hidden-xs">';
+  $out .= '<a href="#" class="btn btn-default btn-lg btn-block btn-grey">Revues A-Z</a>';
+  $out .= '<a href="#" class="btn btn-default btn-lg btn-block btn-grey">Ttes ressources</a>';
+  $out .= '</div>';
+
+  $out .= '</div>';
+
   return $out;
 }
 
