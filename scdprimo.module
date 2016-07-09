@@ -144,7 +144,7 @@ function scdprimo_global_form($form_state) {
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#attributes' => array(
-      'placeholder' => t('Trouvez des livres, revues, DVD, etc...'),
+      'placeholder' => t('Livres, revues, DVD, etc...'),
     ),
     '#theme_wrappers' => array(),
     '#prefix' => '<div class="input-group input-group-lg">',
@@ -204,7 +204,7 @@ function scdprimo_library_form() {
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#attributes' => array(
-      'placeholder' => t('Trouvez des livres, revues, DVD, etc...'),
+      'placeholder' => t('Livres, revues, DVD, etc...'),
     ),
     '#theme_wrappers' => array(),
     '#prefix' => '<div class="input-group input-group-lg">',
