@@ -118,6 +118,18 @@ function scdprimo_recherche_tabs() {
     $out .= "</table>";
     $out .= "</div>";
 
+    $out .= '<div role="tabpanel" class="tab-pane" id="lib3">';
+    $out .= '<table class="table table-bordered">';
+    $out .= '<tr>';
+    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_pubmed_form')) . '</td>';
+    $out .= '</tr>';
+    $out .= '<tr class="visible-xs">';
+    $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
+    $out .= '<td class="col-xs-6"><a href="#">Ttes ressources</a></td>';
+    $out .= "</tr>";
+    $out .= "</table>";
+    $out .= "</div>";
+
   $out .= '</div>';
   $out .= '</div>';
   $out .= '</div>';
@@ -258,6 +270,28 @@ function scdprimo_scopus_form() {
   return $form;
 }
 
+function scdprimo_pubmed_form() {
+  $form['term'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#attributes' => array(
+      'placeholder' => t('Livres, revues, DVD, etc...'),
+    ),
+    '#theme_wrappers' => array(),
+    '#prefix' => '<div class="input-group input-group-lg">',
+    '#required' => TRUE,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
+    '#prefix' => '<span class="input-group-btn">',
+    '#suffix' => '</span></div>',
+  );
+
+  return $form;
+}
+
 function scdprimo_martinique_form() {
   return scdprimo_library_form();
 }
@@ -309,6 +343,16 @@ function scdprimo_recherche_form_submit($form, &$form_state) {
 
 function scdprimo_scopus_form_submit($form, &$form_state) {
   $url = 'https://www.scopus.com/results/results.uri' .
+    url(NULL, array(
+      'query' => $form_state['values'],
+      'external' => TRUE,
+    ));
+
+  drupal_goto($url); 
+}
+
+function scdprimo_pubmed_form_submit($form, &$form_state) {
+  $url = 'http://www.ncbi.nlm.nih.gov/pubmed' .
     url(NULL, array(
       'query' => $form_state['values'],
       'external' => TRUE,
