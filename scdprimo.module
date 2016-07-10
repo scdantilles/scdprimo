@@ -8,67 +8,9 @@ function scdprimo_help($path, $arg) {
   }
 } 
 
-function scdprimo_menu() {
-  $items[] = array(
-    'path' => 'primo-global',
-    'title' => 'Rechercher',
-    'page callback' => 'scdprimo_global',
-    'access callback' => TRUE,
-  );
-
-  $items[] = array(
-    'path' => 'primo-martinique',
-    'title' => 'Rechercher',
-    'page callback' => 'scdprimo_martinique',
-    'access callback' => TRUE,
-  );
-
-  $items[] = array(
-    'path' => 'primo-guadeloupe',
-    'title' => 'Rechercher',
-    'page callback' => 'scdprimo_guadeloupe',
-    'access callback' => TRUE,
-  );
-
-  $items[] = array(
-    'path' => 'primo-recherche',
-    'title' => 'Rechercher',
-    'page callback' => 'scdprimo_recherche',
-    'access callback' => TRUE,
-  );
-
-  return $items;
-}
-
-function scdprimo_global() {
-  return drupal_get_form('scdprimo_global_form');
-}
-
-function scdprimo_martinique() {
-  return drupal_get_form('scdprimo_martinique_form');
-}
-
-function scdprimo_guadeloupe() {
-  return drupal_get_form('scdprimo_guadeloupe_form');
-}
-
-function scdprimo_recherche() {
-  return drupal_get_form('scdprimo_recherche_form');
-}
-
 function scdprimo_block_info() {
   $blocks['primo_global'] = array(
     'info' => t('Recherche Primo globale'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
-
-  $blocks['primo_martinique'] = array(
-    'info' => t('Recherche Primo pour la Martinique'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
-
-  $blocks['primo_guadeloupe'] = array(
-    'info' => t('Recherche Primo pour la Guadeloupe'), 
     'cache' => DRUPAL_NO_CACHE,
   );
 
@@ -88,16 +30,16 @@ function scdprimo_recherche_tabs() {
   $out .= '<div id="recherchetabs" class="col-xs-12 col-sm-9">';
   $out .= '<div class="shadow-container">';
   $out .= '<ul class="nav nav-tabs" role="tablist">';
-  $out .= '<li role="presentation" class="active"><a href="#lib1" aria-controls="lib1" role="tab" data-toggle="tab">UADoc</a></li>';
-  $out .= '<li role="presentation"               ><a href="#lib2" aria-controls="lib2" role="tab" data-toggle="tab">Scopus</a></li>';
-  $out .= '<li role="presentation"               ><a href="#lib3" aria-controls="lib3" role="tab" data-toggle="tab">PubMed</a></li>';
+  $out .= '<li role="presentation" class="active"><a href="#uadoc" aria-controls="uadoc" role="tab" data-toggle="tab">UADoc</a></li>';
+  $out .= '<li role="presentation"               ><a href="#scopus" aria-controls="scopus" role="tab" data-toggle="tab">Scopus</a></li>';
+  $out .= '<li role="presentation"               ><a href="#pubmed" aria-controls="pubmed" role="tab" data-toggle="tab">PubMed</a></li>';
   $out .= "</ul>";
   $out .= '<div class="tab-content">';
 
-    $out .= '<div role="tabpanel" class="tab-pane active" id="lib1">';
+    $out .= '<div role="tabpanel" class="tab-pane active" id="uadoc">';
     $out .= '<table class="table table-bordered">';
     $out .= '<tr>';
-    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_recherche_form')) . '</td>';
+    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_uadoc_form')) . '</td>';
     $out .= '</tr>';
     $out .= '<tr class="visible-xs">';
     $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
@@ -106,7 +48,7 @@ function scdprimo_recherche_tabs() {
     $out .= "</table>";
     $out .= "</div>";
 
-    $out .= '<div role="tabpanel" class="tab-pane" id="lib2">';
+    $out .= '<div role="tabpanel" class="tab-pane" id="scopus">';
     $out .= '<table class="table table-bordered">';
     $out .= '<tr>';
     $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_scopus_form')) . '</td>';
@@ -118,7 +60,7 @@ function scdprimo_recherche_tabs() {
     $out .= "</table>";
     $out .= "</div>";
 
-    $out .= '<div role="tabpanel" class="tab-pane" id="lib3">';
+    $out .= '<div role="tabpanel" class="tab-pane" id="pubmed">';
     $out .= '<table class="table table-bordered">';
     $out .= '<tr>';
     $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_pubmed_form')) . '</td>';
@@ -149,12 +91,6 @@ function scdprimo_block_view($delta = '') {
     case 'primo_global':
       $block['content'] = drupal_get_form('scdprimo_global_form');
       break;
-    case 'primo_martinique':
-      $block['content'] = drupal_get_form('scdprimo_martinique_form');
-      break;
-    case 'primo_guadeloupe':
-      $block['content'] = drupal_get_form('scdprimo_guadeloupe_form');
-      break;
     case 'primo_recherche':
       $block['content'] = scdprimo_recherche_tabs(); 
       break;
@@ -180,18 +116,6 @@ function scdprimo_global_form($form_state) {
   $form['search_scope'] = array('#type' => 'hidden', '#value' => 'Blended'    );
   $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
 
-  /*$form['types'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Filtrer par type'),
-    '#options' => drupal_map_assoc(array(
-      t('books'),
-      t('articles'),
-      t('reviews'),
-      t('media'),
-      t('other'),
-    )),
-  );*/
-
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
@@ -210,39 +134,7 @@ function scdprimo_global_form_submit($form, &$form_state) {
       'external' => TRUE,
     ));
 
-  /*foreach($form_state['values']['types'] as $k => $v) {
-    if ($v)
-      $url .= "&query=facet_rtype,exact," . $k;
-  }*/
-
   drupal_goto($url); 
-}
-
-function scdprimo_library_form() {
-  $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
-  $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',       );
-  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON');
-  $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
-
-  $form['query'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Search'),
-    '#attributes' => array(
-      'placeholder' => t('Livres, revues, DVD, etc...'),
-    ),
-    '#theme_wrappers' => array(),
-    '#prefix' => '<div class="input-group input-group-lg">',
-    '#required' => TRUE,
-  );
-
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
-    '#prefix' => '<span class="input-group-btn">',
-    '#suffix' => '</span></div>',
-  );
-
-  return $form;
 }
 
 function scdprimo_scopus_form() {
@@ -292,45 +184,34 @@ function scdprimo_pubmed_form() {
   return $form;
 }
 
-function scdprimo_martinique_form() {
-  return scdprimo_library_form();
+function scdprimo_uadoc_form() {
+  $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
+  $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',       );
+  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON');
+  $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
+
+  $form['query'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#attributes' => array(
+      'placeholder' => t('Livres, revues, DVD, etc...'),
+    ),
+    '#theme_wrappers' => array(),
+    '#prefix' => '<div class="input-group input-group-lg">',
+    '#required' => TRUE,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
+    '#prefix' => '<span class="input-group-btn">',
+    '#suffix' => '</span></div>',
+  );
+
+  return $form;
 }
 
-function scdprimo_guadeloupe_form() {
-  return scdprimo_library_form();
-}
-
-function scdprimo_recherche_form() {
-  return scdprimo_library_form();
-}
-
-function scdprimo_martinique_form_submit($form, &$form_state) {
-  $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
-  $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
-    url(NULL, array(
-      'query' => $form_state['values'],
-      'external' => TRUE,
-    ));
-
-  $url .= "query=facet_library,exact,BUMA";
-
-  drupal_goto($url);
-}
-
-function scdprimo_guadeloupe_form_submit($form, &$form_state) {
-  $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
-  $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
-    url(NULL, array(
-      'query' => $form_state['values'],
-      'external' => TRUE,
-    ));
-
-  $url .= "query=facet_library,exact,BUGA";
-
-  drupal_goto($url);
-}
-
-function scdprimo_recherche_form_submit($form, &$form_state) {
+function scdprimo_uadoc_form_submit($form, &$form_state) {
   $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
   $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
     url(NULL, array(
