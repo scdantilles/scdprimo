@@ -106,6 +106,18 @@ function scdprimo_recherche_tabs() {
     $out .= "</table>";
     $out .= "</div>";
 
+    $out .= '<div role="tabpanel" class="tab-pane" id="lib2">';
+    $out .= '<table class="table table-bordered">';
+    $out .= '<tr>';
+    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_scopus_form')) . '</td>';
+    $out .= '</tr>';
+    $out .= '<tr class="visible-xs">';
+    $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
+    $out .= '<td class="col-xs-6"><a href="#">Ttes ressources</a></td>';
+    $out .= "</tr>";
+    $out .= "</table>";
+    $out .= "</div>";
+
   $out .= '</div>';
   $out .= '</div>';
   $out .= '</div>';
@@ -221,6 +233,31 @@ function scdprimo_library_form() {
   return $form;
 }
 
+function scdprimo_scopus_form() {
+  $form['sot']  = array('#type' => 'hidden', '#value' => 'b');
+  $form['s']  = array('#type' => 'hidden', '#value' => 'TITLE-ABS-KEY');
+
+  $form['searchterm1'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#attributes' => array(
+      'placeholder' => t('Livres, revues, DVD, etc...'),
+    ),
+    '#theme_wrappers' => array(),
+    '#prefix' => '<div class="input-group input-group-lg">',
+    '#required' => TRUE,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
+    '#prefix' => '<span class="input-group-btn">',
+    '#suffix' => '</span></div>',
+  );
+
+  return $form;
+}
+
 function scdprimo_martinique_form() {
   return scdprimo_library_form();
 }
@@ -262,6 +299,16 @@ function scdprimo_guadeloupe_form_submit($form, &$form_state) {
 function scdprimo_recherche_form_submit($form, &$form_state) {
   $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
   $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
+    url(NULL, array(
+      'query' => $form_state['values'],
+      'external' => TRUE,
+    ));
+
+  drupal_goto($url); 
+}
+
+function scdprimo_scopus_form_submit($form, &$form_state) {
+  $url = 'https://www.scopus.com/results/results.uri' .
     url(NULL, array(
       'query' => $form_state['values'],
       'external' => TRUE,
