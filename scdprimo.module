@@ -145,7 +145,7 @@ function scdprimo_scopus_form() {
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#attributes' => array(
-      'placeholder' => t('Livres, revues, DVD, etc...'),
+      'placeholder' => t('Livres, articles, DVD, etc...'),
     ),
     '#theme_wrappers' => array(),
     '#prefix' => '<div class="input-group input-group-lg">',
@@ -167,7 +167,7 @@ function scdprimo_pubmed_form() {
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#attributes' => array(
-      'placeholder' => t('Livres, revues, DVD, etc...'),
+      'placeholder' => t('Livres, articles, DVD, etc...'),
     ),
     '#theme_wrappers' => array(),
     '#prefix' => '<div class="input-group input-group-lg">',
@@ -194,7 +194,7 @@ function scdprimo_uadoc_form() {
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#attributes' => array(
-      'placeholder' => t('Livres, revues, DVD, etc...'),
+      'placeholder' => t('Livres, articles, DVD, etc...'),
     ),
     '#theme_wrappers' => array(),
     '#prefix' => '<div class="input-group input-group-lg">',
