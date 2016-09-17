@@ -3,7 +3,7 @@
 function scdprimo_help($path, $arg) {
   switch ($path) {
     case "admin/help#scdprimo":
-      return '<p>' . t("Help text") . '</p>';
+      return '<p>' . t("Various search forms for Primo, Scopus and Pubmed") . '</p>';
       break;
   }
 } 
