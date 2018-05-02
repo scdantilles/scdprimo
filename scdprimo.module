@@ -23,6 +23,10 @@ function scdprimo_block_info() {
 }
 
 function scdprimo_recherche_tabs() {
+
+  $uadoc = drupal_get_form('scdprimo_uadoc_form');
+  $scopus = drupal_get_form('scdprimo_scopus_form');
+  $pubmed = drupal_get_form('scdprimo_pubmed_form');
   $out = "";
 
   $out .= '<div class="row">';
@@ -39,7 +43,7 @@ function scdprimo_recherche_tabs() {
     $out .= '<div role="tabpanel" class="tab-pane active" id="uadoc">';
     $out .= '<table class="table table-bordered">';
     $out .= '<tr>';
-    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_uadoc_form')) . '</td>';
+    $out .= '<td colspan="2">' . drupal_render($uadoc) . '</td>';
     $out .= '</tr>';
     $out .= '<tr class="visible-xs">';
     $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
@@ -51,7 +55,7 @@ function scdprimo_recherche_tabs() {
     $out .= '<div role="tabpanel" class="tab-pane" id="scopus">';
     $out .= '<table class="table table-bordered">';
     $out .= '<tr>';
-    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_scopus_form')) . '</td>';
+    $out .= '<td colspan="2">' . drupal_render($scopus) . '</td>';
     $out .= '</tr>';
     $out .= '<tr class="visible-xs">';
     $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
@@ -63,7 +67,7 @@ function scdprimo_recherche_tabs() {
     $out .= '<div role="tabpanel" class="tab-pane" id="pubmed">';
     $out .= '<table class="table table-bordered">';
     $out .= '<tr>';
-    $out .= '<td colspan="2">' . drupal_render(drupal_get_form('scdprimo_pubmed_form')) . '</td>';
+    $out .= '<td colspan="2">' . drupal_render($pubmed) . '</td>';
     $out .= '</tr>';
     $out .= '<tr class="visible-xs">';
     $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
