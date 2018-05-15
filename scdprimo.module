@@ -231,6 +231,11 @@ function scdprimo_uadoc_form_submit($form, &$form_state) {
 }
 
 function scdprimo_scopus_form_submit($form, &$form_state) {
+
+  $new_s = $form['s']['#value']."(".$form['searchterm1']['#value'].")";
+  
+  $form_state['values']['s'] = $new_s;
+  
   $form_state['values']['submit'] = null;
   $form_state['values']['op'] = null;
   $url = 'https://www.scopus.com/results/results.uri' .
