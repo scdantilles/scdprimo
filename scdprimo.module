@@ -27,6 +27,7 @@ function scdprimo_recherche_tabs() {
   $uadoc = drupal_get_form('scdprimo_uadoc_form');
   $scopus = drupal_get_form('scdprimo_scopus_form');
   $pubmed = drupal_get_form('scdprimo_pubmed_form');
+  $manioc = drupal_get_form('scdprimo_manioc_form');
   $out = "";
 
   $out .= '<div class="row">';
@@ -37,6 +38,7 @@ function scdprimo_recherche_tabs() {
   $out .= '<li role="presentation" class="active"><a href="#uadoc" aria-controls="uadoc" role="tab" data-toggle="tab">UADoc</a></li>';
   $out .= '<li role="presentation"               ><a href="#scopus" aria-controls="scopus" role="tab" data-toggle="tab">Scopus</a></li>';
   $out .= '<li role="presentation"               ><a href="#pubmed" aria-controls="pubmed" role="tab" data-toggle="tab">PubMed</a></li>';
+  $out .= '<li role="presentation"               ><a href="#manioc" aria-controls="manioc" role="tab" data-toggle="tab">Manioc</a></li>';
   $out .= "</ul>";
   $out .= '<div class="tab-content">';
 
@@ -68,6 +70,18 @@ function scdprimo_recherche_tabs() {
     $out .= '<table class="table table-bordered">';
     $out .= '<tr>';
     $out .= '<td colspan="2">' . drupal_render($pubmed) . '</td>';
+    $out .= '</tr>';
+    $out .= '<tr class="visible-xs">';
+    $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
+    $out .= '<td class="col-xs-6"><a href="#">Ttes ressources</a></td>';
+    $out .= "</tr>";
+    $out .= "</table>";
+    $out .= "</div>";
+	
+    $out .= '<div role="tabpanel" class="tab-pane" id="manioc">';
+    $out .= '<table class="table table-bordered">';
+    $out .= '<tr>';
+    $out .= '<td colspan="2">' . drupal_render($manioc) . '</td>';
     $out .= '</tr>';
     $out .= '<tr class="visible-xs">';
     $out .= '<td class="col-xs-6"><a href="#">Revues A-Z</a></td>';
@@ -192,11 +206,15 @@ function scdprimo_pubmed_form() {
 }
 
 function scdprimo_uadoc_form() {
-  $form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
+  $form['offset']  = array('#type' => 'hidden', '#value' => '0',       );
   $form['vid']          = array('#type' => 'hidden', '#value' => 'UAG',       );
-  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'UAG_HORIZON');
+  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'Blended');
   $form['tab']          = array('#type' => 'hidden', '#value' => 'default_tab');
-
+  $form['subform']          = array('#type' => 'hidden', '#value' => 'Trouver');
+  $form['sortby']          = array('#type' => 'hidden', '#value' => 'rank');
+  $form['lang']          = array('#type' => 'hidden', '#value' => 'fr_FR');
+  
+  
   $form['query'] = array(
     '#type' => 'textfield',
     '#title' => t('Search'),
@@ -220,8 +238,54 @@ function scdprimo_uadoc_form() {
 }
 
 function scdprimo_uadoc_form_submit($form, &$form_state) {
+	
   $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
-  $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
+  $url = 'https://primo-33uag.hosted.exlibrisgroup.com/primo-explore/search' .
+    url(NULL, array(
+      'query' => $form_state['values'],
+      'external' => TRUE,
+    ));
+
+  drupal_goto($url); 
+}
+
+function scdprimo_manioc_form() {
+  $form['a']  = array('#type' => 'hidden', '#value' => 'q',       );
+  $form['r']          = array('#type' => 'hidden', '#value' => '1',       );
+  $form['hs'] = array('#type' => 'hidden', '#value' => '1');
+  $form['e']          = array('#type' => 'hidden', '#value' => 'q-11000-00---off-0portail-bnpm,fichiers,portail,catalogu,etudesc1,recherch,patrimon,images,bnf,dloc,tramil,esclaves,thsesenl,ifremer,haluag,uwi-01-1----0-10-0---0---0direct-10---4-------0-1l--11-fr-Zz-1---20-about---00-3-1-00-0-0-11-0-0utfZz-8-00');
+  $form['fqf']          = array('#type' => 'hidden', '#value' => 'DC',       );
+  $form['t']          = array('#type' => 'hidden', '#value' => '0',       );
+  
+  $form['q'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#attributes' => array(
+      'placeholder' => t('Titre, auteurs, sujets'),
+      'onclick' => 'this.form.target="_blank";return true;',
+    ),
+    '#theme_wrappers' => array(),
+    '#prefix' => '<div class="input-group input-group-lg">',
+    '#required' => TRUE,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => '<span class="glyphicon glyphicon-search visible-xs" aria-hidden="true"></span> <span class="hidden-xs">Chercher</span>',
+    '#prefix' => '<span class="input-group-btn">',
+    '#suffix' => '</span></div>',
+  );
+
+  return $form;
+}
+
+function scdprimo_manioc_form_submit($form, &$form_state) {
+	
+	
+  $form_state['values']['submit'] = null;
+  $form_state['values']['op'] = null;	
+
+  $url = 'http://www.manioc.org/gsdl/cgi-bin/library' .
     url(NULL, array(
       'query' => $form_state['values'],
       'external' => TRUE,
@@ -236,6 +300,7 @@ function scdprimo_scopus_form_submit($form, &$form_state) {
   
   $form_state['values']['s'] = $new_s;
   
+      
   $form_state['values']['submit'] = null;
   $form_state['values']['op'] = null;
   $url = 'https://www.scopus.com/results/results.uri' .
@@ -243,7 +308,7 @@ function scdprimo_scopus_form_submit($form, &$form_state) {
       'query' => $form_state['values'],
       'external' => TRUE,
     ));
-
+		
   drupal_goto($url); 
 }
 
