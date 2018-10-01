@@ -147,7 +147,7 @@ function scdprimo_global_form($form_state) {
 
 function scdprimo_global_form_submit($form, &$form_state) {
   $form_state['values']['query'] = 'any,contains,' . $form_state['values']['query'];
-  $url = 'http://primo-33uag.hosted.exlibrisgroup.com/primo_library/libweb/action/dlSearch.do' .
+  $url = 'https://primo-33uag.hosted.exlibrisgroup.com/primo-explore/search' .
     url(NULL, array(
       'query' => $form_state['values'],
       'external' => TRUE,
