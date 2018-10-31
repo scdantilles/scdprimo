@@ -303,7 +303,7 @@ function scdprimo_scopus_form_submit($form, &$form_state) {
       
   $form_state['values']['submit'] = null;
   $form_state['values']['op'] = null;
-  $url = 'https://www.scopus.com/results/results.uri' .
+  $url = 'http://bu-services.univ-antilles.fr:5000/login?url=https://www.scopus.com/results/results.uri' .
     url(NULL, array(
       'query' => $form_state['values'],
       'external' => TRUE,
