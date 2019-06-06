@@ -137,8 +137,8 @@ function scdprimo_global_form($form_state) {
 
   //$form['institution']  = array('#type' => 'hidden', '#value' => 'UAG',       );
   $form['vid']          = array('#type' => 'hidden', '#value' => '33UAG_INST:33UAG_INST',       );
-  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'MyInst_and_CI');
-  $form['tab']          = array('#type' => 'hidden', '#value' => 'Everything');
+  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'TOUTEXL');
+  $form['tab']          = array('#type' => 'hidden', '#value' => 'TOUT');
 
   $form['submit'] = array(
     '#type' => 'submit',
@@ -225,8 +225,8 @@ function scdprimo_pubmed_form() {
 function scdprimo_uadoc_form() {
   $form['offset']  = array('#type' => 'hidden', '#value' => '0',       );
   $form['vid']          = array('#type' => 'hidden', '#value' => '33UAG_INST:33UAG_INST',       );
-  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'MyInst_and_CI');
-  $form['tab']          = array('#type' => 'hidden', '#value' => 'Everything');
+  $form['search_scope'] = array('#type' => 'hidden', '#value' => 'TOUTEXL');
+  $form['tab']          = array('#type' => 'hidden', '#value' => 'TOUT');
   $form['subform']          = array('#type' => 'hidden', '#value' => 'Trouver');
   $form['sortby']          = array('#type' => 'hidden', '#value' => 'rank');
   $form['lang']          = array('#type' => 'hidden', '#value' => 'fr_FR');
